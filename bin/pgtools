@@ -1,0 +1,125 @@
+#!/usr/bin/env ruby -w
+require 'optparse'
+require 'pagerduty/base'
+require 'pagerduty/override'
+
+def load_trigger(trigger_name)
+  config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] || ENV['HOME']}/.pgtools/triggers.yaml"
+  if File.readable?(config_file)
+    triggers = YAML.load_file(config_file)
+  else
+    abort("#{config_file} not found")
+  end
+  pg = TapJoy::PagerDuty::Base.new
+  puts pg.post_trigger(**triggers[trigger_name.to_sym])
+end
+
+def get_level_one_users(pg)
+  return pg.get_users_on_call['escalation_policies'].flat_map do |policy|
+    policy['on_call'].map do |oncall|
+      oncall['user']['id'] if oncall['start'] and oncall['level'] == 1
+    end.compact
+  end
+end
+
+options = {}
+
+subtext = <<HELP
+Supported commands are:
+  set_override :
+  trigger :
+  get_on_call :
+
+See '#{File.basename(__FILE__)} COMMAND --help' for more information on a specific command.
+HELP
+
+global = OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename(__FILE__)} [options] [subcommand [options]]"
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+  opts.separator ""
+  opts.separator subtext
+end
+
+subcommands = {
+  'set_override' => OptionParser.new do |opts|
+    opts.banner = <<-EOS
+
+    Usage: #{File.basename(__FILE__)} set_override [options]
+
+    This code is used to temporarily override the primary person on-call for a given schedule.
+
+    EOS
+    
+    opts.on('-e', '--email EMAIL', 'Specify email address of override user') do |e|
+      options[:email] = e
+    end
+    opts.on('-s', '--schedule-name SCHEDULE', 'Name of schedule to override') do |s|
+      options[:schedule_name] = s
+    end
+    opts.on('-t', '--override-length TIME', 'Number of seconds to maintain override for') do |t|
+      options[:override_length] = t
+    end
+  end,
+
+  'trigger' => OptionParser.new do |opts|
+    opts.banner = <<-EOS
+
+    Usage: #{File.basename(__FILE__)} trigger [options]
+
+    This script will create a pagerduty alert, based on the name of the trigger
+    hash as specified in 'triggers.yaml'
+
+    EOS
+
+    opts.on("-t", "--trigger TRIGGER", 'Name of trigger to alert on') do |t|
+      options[:trigger] = t
+    end
+  end,
+
+  'get_on_call' => OptionParser.new do |opts|
+    opts.banner = <<-EOS
+
+    Usage: #{File.basename(__FILE__)} get_on_call
+
+    This script will return the list of each person on-call sorted by schedule.
+    There are no options available for this command at this time.
+
+    EOS
+  end
+}
+
+global.order!
+command = ARGV.shift
+begin
+  subcommands[command].order!
+rescue NoMethodError
+  abort("Invalid Input.\n\n#{subtext}")
+end
+
+case command
+when 'trigger'
+  load_trigger(options[:trigger])
+when 'set_override'
+  raise OptionParser::MissingArgument if options[:email].nil?
+  options[:schedule_name] = 'Default' if options[:schedule_name].nil?
+  options[:override_length] = 3600 if options[:override_length].nil?
+  TapJoy::PagerDuty::Override.new(options[:email], options[:schedule_name], options[:override_length])
+when 'get_on_call'
+  pg = TapJoy::PagerDuty::Base.new
+  get_level_one_users(pg).each do |u|
+    user = pg.get_user_details(u)['user']
+    on_call = user['on_call']
+    puts "Name: #{user['name']}"
+    on_call.each do |oc|
+      puts "\tGroup: #{oc['escalation_policy']['name']}"
+      puts "\tStart: #{oc['start']}"
+      puts "\tEnd: #{oc['end']}"
+      puts "\n"
+    end
+    puts '---'
+  end
+else
+ abort("Unknown command: #{command}")
+end

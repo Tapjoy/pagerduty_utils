@@ -1,8 +1,0 @@
-:<Name of Trigger>:
-  :service_key:  # Service key associated with Trigger
-  :incident_key: # Incident key to apply to trigger
-  :description:  # Description that should be in triggered message
-  :client:       # Name of client to trigger on
-  :client_url:   # URL of client to report on
-  :details:      # Trigger details
-# Repeat above block once for each trigger (use different trigger names for each trigger)
