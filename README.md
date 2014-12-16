@@ -97,7 +97,7 @@ end
 
 ### Assigning accountability to the deployer
 
-Another problem with having developer-run deployments is assigning accountability to those developers, so they will be aware if their deploy manages to go awry.  To this end, we can use the ```set_override.rb``` script.
+Another problem with having developer-run deployments is assigning accountability to those developers, so they will be aware if their deploy manages to go awry.  To this end, we can use the ```pgtools set_override``` command.
 
 By passing options into the script, we can easily assign someone to the on-call schedule based on project and user’s email (which are already recorded):
 
