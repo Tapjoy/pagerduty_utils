@@ -1,2 +1,0 @@
-:subdomain: # subdomain used for PagerDuty access
-:api_token: # API token allocated in PagerDuty for use of these scripts
