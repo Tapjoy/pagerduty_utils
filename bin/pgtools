@@ -51,7 +51,7 @@ subcommands = {
     This code is used to temporarily override the primary person on-call for a given schedule.
 
     EOS
-    
+
     opts.on('-e', '--email EMAIL', 'Specify email address of override user') do |e|
       options[:email] = e
     end
@@ -59,7 +59,7 @@ subcommands = {
       options[:schedule_name] = s
     end
     opts.on('-t', '--override-length TIME', 'Number of seconds to maintain override for') do |t|
-      options[:override_length] = t
+      options[:override_length] = t.to_i
     end
   end,
 
