@@ -11,7 +11,7 @@ In its current form, it provides access to three areas of PagerDuty -- setting a
 
 ## Configuration
 
-There are two config files that are currently used by this application.  The default location for these files is $HOME/.pgtools/ ; however, this can be overridden, using the ```$PAGERDUTY_CONFIG``` environment variable
+There are two config files that are currently used by this application.  The default location for these files is $HOME/.pgtools/ ; however, this can be overridden, using the ```$PAGERDUTY_CONFIG_DIR``` environment variable
 
 ### pg_connect.yaml
 
@@ -30,9 +30,9 @@ This config file provides required settings to post triggers to the PagerDuty in
 
 ```yaml
 :<Name of Trigger>:
-  :service_key:  # Service key associated with Trigger
-  :incident_key: # Incident key to apply to trigger
-  :description:  # Description that should be in triggered message
+  :service_key:  # Service (API) key associated with Trigger. Required Field.
+  :incident_key: # Incident key to apply to trigger for tracking. Required Field.
+  :description:  # Description that should be in triggered message. Required Field.
   :client:       # Name of client to trigger on
   :client_url:   # URL of client to report on
   :details:      # Trigger details

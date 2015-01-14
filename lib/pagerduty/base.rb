@@ -11,7 +11,7 @@ class TapJoy::PagerDuty::Base
   # Initializer services to import values from pg_connect.yaml
   # to configure organization-specific values (currently, subdomain and api_token)
   def initialize
-    config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] || ENV['HOME']}/.pgtools/pg_connect.yaml"
+    config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgtools/triggers.yaml'}"
     pg_conn = YAML.load_file(config_file) if File.readable?(config_file)
 
     @AUTH_HEADER = {
@@ -72,6 +72,7 @@ class TapJoy::PagerDuty::Base
   # Create a page to the first person on call for a given service key
   def post_trigger(service_key:, incident_key:, description:, client:,
     client_url:, details:)
+
     # Ruby 2.x style kw-args is required here to make hash passing easier
     endpoint = return_pagerduty_url(:create_trigger)
     data = {
