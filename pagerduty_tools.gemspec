@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'pagerduty_tools'
-  s.version     = '0.0.1alpha15'
+  s.version     = '0.0.1alpha16'
   s.date        = '2014-11-25'
   s.summary     = 'TapJoy PagerDuty Tools'
   s.description = 'A set of tools to make leveraging the PagerDuty APIs easier'

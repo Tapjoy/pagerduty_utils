@@ -4,8 +4,8 @@ require 'pagerduty/base'
 require 'pagerduty/override'
 
 def load_trigger(trigger_name)
-  config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] || ENV['HOME']}/.pgtools/triggers.yaml"
-  if File.readable?(config_file)
+  config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgtools/triggers.yaml'}"
+ if File.readable?(config_file)
     triggers = YAML.load_file(config_file)
   else
     abort("#{config_file} not found")
@@ -100,6 +100,7 @@ end
 
 case command
 when 'trigger'
+  raise OptionParser::MissingArgument if options[:trigger].nil?
   load_trigger(options[:trigger])
 when 'set_override'
   raise OptionParser::MissingArgument if options[:email].nil?
