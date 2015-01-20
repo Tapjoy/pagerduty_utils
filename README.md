@@ -1,7 +1,7 @@
-PagerDuty Tools
+PagerDuty Utils
 ===
 
-These PagerDuty Tools are a set of tools used by the Tapjoy DevOps team to integrate PagerDuty into our internal developer-facing applications.
+These PagerDuty Utils are a set of tools used by the Tapjoy DevOps team to integrate PagerDuty into our internal developer-facing applications.
 
 In its current form, it provides access to three areas of PagerDuty -- setting an on-call override, getting a list of who is on-call, and triggering an alert.  The syntax for these commands is listed in the Commands section.  For a set of example uses, you can turn to this blog post:  <Insert Blog Post Here>
 
@@ -11,7 +11,7 @@ In its current form, it provides access to three areas of PagerDuty -- setting a
 
 ## Configuration
 
-There are two config files that are currently used by this application.  The default location for these files is $HOME/.pgtools/ ; however, this can be overridden, using the ```$PAGERDUTY_CONFIG_DIR``` environment variable
+There are two config files that are currently used by this application.  The default location for these files is $HOME/.pgutils/ ; however, this can be overridden, using the ```$PAGERDUTY_CONFIG_DIR``` environment variable
 
 ### pg_connect.yaml
 
@@ -46,7 +46,7 @@ Repeat above block once for each trigger (use different trigger names for each t
 This code is used to temporarily override the primary person on-call for a given schedule.
 
 ```
-Usage: pgtools set_override [options]
+Usage: pgutils set_override [options]
             --email, -e <s>:   Specify email address of override user
     --schedule-name, -n <s>:   Name of schedule to override (default: Default)
   --override-length, -t <i>:   Number of seconds to maintain override for
@@ -60,7 +60,7 @@ This code will return all people who are tier 1 support on-call, and will additi
 all schedules that they are on-call for.  There are no parameters for this script.
 
 ```
-Usage: pgtools get_on_call
+Usage: pgutils get_on_call
 ```
 
 ### trigger
@@ -69,7 +69,7 @@ This script will create a pagerduty alert, based on the name of the trigger
 hash as specified in 'triggers.yaml'
 
 ```
-  Usage: pgtools trigger [options]
+  Usage: pgutils trigger [options]
   --trigger, -t <s>:   Name of trigger to alert on
          --help, -h:   Show this message
 ```
@@ -79,9 +79,9 @@ hash as specified in 'triggers.yaml'
 
 Recently, we’ve started to migrate from set deploy slots run by the DevOps team to an on-demand deployment system used by developers.  The system we’ve set up is a push button based website, but has left us with an interesting problem: what’s the best way for developers to reach out to a point of contact in DevOps?
 
-By connecting the ```pgtools trigger``` command to a button on the deployment website, developers can click and instantly page the first person on-call.
+By connecting the ```pgutils trigger``` command to a button on the deployment website, developers can click and instantly page the first person on-call.
 
-For a less intrusive system, we can simply return a list of everyone on-call, and let the developers work out who the appropriate contact will be (using the ```pgtools get_on_call``` command):
+For a less intrusive system, we can simply return a list of everyone on-call, and let the developers work out who the appropriate contact will be (using the ```pgutils get_on_call``` command):
 
 ```ruby
 pg = TapJoy::PagerDuty::Base.new
@@ -101,7 +101,7 @@ end
 
 ### Assigning accountability to the deployer
 
-Another problem with having developer-run deployments is assigning accountability to those developers, so they will be aware if their deploy manages to go awry.  To this end, we can use the ```pgtools set_override``` command.
+Another problem with having developer-run deployments is assigning accountability to those developers, so they will be aware if their deploy manages to go awry.  To this end, we can use the ```pgutils set_override``` command.
 
 By passing options into the script, we can easily assign someone to the on-call schedule based on project and user’s email (which are already recorded):
 
