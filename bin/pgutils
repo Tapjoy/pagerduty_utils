@@ -4,7 +4,7 @@ require 'pagerduty/base'
 require 'pagerduty/override'
 
 def load_trigger(trigger_name)
-  config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgtools/triggers.yaml'}"
+  config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgutils/triggers.yaml'}"
  if File.readable?(config_file)
     triggers = YAML.load_file(config_file)
   else
