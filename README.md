@@ -9,6 +9,20 @@ In its current form, it provides access to three areas of PagerDuty -- setting a
 * Ruby 2.1
 * Httparty gem
 
+## Installation
+### Installation from RubyGems
+```
+gem install pagerduty_utils
+```
+### Installation from source
+```
+git clone git@github.com:Tapjoy/pagerduty_utils.git
+cd pagerduty_utils
+gem build pagerduty_utils.gemspec
+gem install pagerduty_utils*.gem --no-ri --no-rdoc
+cd ..
+```
+
 ## Configuration
 
 There are two config files that are currently used by this application.  The default location for these files is $HOME/.pgutils/ ; however, this can be overridden, using the ```$PAGERDUTY_CONFIG_DIR``` environment variable
