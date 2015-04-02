@@ -2,7 +2,7 @@
 
 require 'pagerduty/base'
 
-def load_trigger(trigger_name)
+def load_trigger(trigger_name, message)
   config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgutils/triggers.yaml'}"
   if File.readable?(config_file)
     triggers = YAML.load_file(config_file)
@@ -10,6 +10,7 @@ def load_trigger(trigger_name)
     abort("#{config_file} not found")
   end
   pg = Tapjoy::PagerDuty::Base.new
+  triggers[trigger_name.to_sym][:description] = message if message
   puts pg.post_trigger(**triggers[trigger_name.to_sym])
 end
 
@@ -45,10 +46,11 @@ when 'trigger'
   opts = Trollop::options do
     usage 'trigger [options]'
     synopsis "\nThis script will create a pagerduty alert, based on the name of the trigger hash as specified in 'triggers.yaml'"
-    opt(:trigger, 'Name of trigger to alert on', required: true, :type => :string)
+    opt :trigger, 'Name of trigger to alert on', required: true, type: :string
+    opt :message, 'Message to include in trigger', type: :string
   end
 
-  load_trigger(opts[:trigger])
+  load_trigger(opts[:trigger], opts[:message])
 when 'get_on_call'
   Trollop::options do
     usage 'get_on_call'
