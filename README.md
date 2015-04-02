@@ -98,7 +98,7 @@ By connecting the ```pgutils trigger``` command to a button on the deployment we
 For a less intrusive system, we can simply return a list of everyone on-call, and let the developers work out who the appropriate contact will be (using the ```pgutils get_on_call``` command):
 
 ```ruby
-pg = TapJoy::PagerDuty::Base.new
+pg = Tapjoy::PagerDuty::Base.new
 get_level_one_users(pg).each do |u|
   user = pg.get_user_details(u)['user']
   on_call = user['on_call']

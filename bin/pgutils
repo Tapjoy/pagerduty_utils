@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby -w
-require 'trollop'
+
 require 'pagerduty/base'
-require 'pagerduty/override'
 
 def load_trigger(trigger_name)
   config_file = "#{ENV['PAGERDUTY_CONFIG_DIR'] ? ENV['PAGERDUTY_CONFIG_DIR'] + 'triggers.yml' : ENV['HOME'] + '/.pgutils/triggers.yaml'}"
@@ -10,7 +9,7 @@ def load_trigger(trigger_name)
   else
     abort("#{config_file} not found")
   end
-  pg = TapJoy::PagerDuty::Base.new
+  pg = Tapjoy::PagerDuty::Base.new
   puts pg.post_trigger(**triggers[trigger_name.to_sym])
 end
 
@@ -26,6 +25,7 @@ SUB_COMMANDS = %w(set_override trigger get_on_call)
 Trollop::options do
   usage '[SUB_COMMAND] [options]'
   synopsis "\nTool to integrate with PagerDuty API.\nAvailable subcommands are: #{SUB_COMMANDS}"
+  version "#{File.basename($0)} #{Tapjoy::PagerDuty::VERSION} \u00A9 2014-2015 Tapjoy, Inc."
   stop_on SUB_COMMANDS
 end
 
@@ -40,7 +40,7 @@ when 'set_override'
     opt(:override_length, 'Number of seconds to maintain override for', default: 3600, :type => :int)
   end
 
-  TapJoy::PagerDuty::Override.new(opts[:email], opts[:schedule_name], opts[:override_length])
+  Tapjoy::PagerDuty::Override.new(opts[:email], opts[:schedule_name], opts[:override_length])
 when 'trigger'
   opts = Trollop::options do
     usage 'trigger [options]'
@@ -55,7 +55,7 @@ when 'get_on_call'
     synopsis "\nThis script will return the list of each person on-call sorted by schedule.\nThere are no options available for this command at this time."
   end
 
-  pg = TapJoy::PagerDuty::Base.new
+  pg = Tapjoy::PagerDuty::Base.new
   get_level_one_users(pg).each do |u|
     user = pg.get_user_details(u)['user']
     on_call = user['on_call']
