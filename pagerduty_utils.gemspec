@@ -13,4 +13,6 @@ Gem::Specification.new do |s|
   s.executables = ['pgutils']
   s.add_runtime_dependency 'trollop', '>= 2.1'
   s.add_runtime_dependency 'httparty'
+  s.add_development_dependency 'rspec', '>= 3.2'
+  s.add_development_dependency 'activesupport', '~> 4.2'
 end
