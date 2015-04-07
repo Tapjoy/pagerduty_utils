@@ -1,12 +1,13 @@
+require File.expand_path('../lib/pagerduty/version', __FILE__)
 Gem::Specification.new do |s|
   s.name        = 'pagerduty_utils'
-  s.version     = '0.1.1'
-  s.date        = '2014-11-25'
-  s.summary     = 'TapJoy PagerDuty Tools'
+  s.version     = Tapjoy::PagerDuty::VERSION
+  s.date        = '2015-04-02'
+  s.summary     = 'Tapjoy PagerDuty Tools'
   s.description = 'A set of tools to make leveraging the PagerDuty APIs easier'
   s.authors     = ['Ali Tayarani']
   s.email       = 'ali.tayarani@tapjoy.com'
-  s.files       = ['lib/pagerduty/base.rb', 'lib/pagerduty/override.rb']
+  s.files       = Dir['lib/pagerduty/**']
   s.homepage    = 'https://github.com/tapjoy/pagerduty_utils'
   s.license     = 'MIT'
   s.executables = ['pgutils']
