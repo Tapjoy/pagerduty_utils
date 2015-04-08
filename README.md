@@ -133,3 +133,11 @@ By passing options into the script, we can easily assign someone to the on-call 
   end
 end
 ```
+
+## Contributing
+
+If you are interested in developing against this repo, follow these steps:
+
+1. Fork the repo
+2. Copy your yaml files that you use at runtime to specs/fixtures.
+3. Create a new PR with your new code and tests
