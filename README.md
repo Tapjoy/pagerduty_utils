@@ -1,6 +1,5 @@
 PagerDuty Utils
 ===
-[![Gem Version](https://badge.fury.io/rb/pagerduty_utils.svg)](http://badge.fury.io/rb/pagerduty_utils)
 
 These PagerDuty Utils are a set of tools used by the Tapjoy DevOps team to integrate PagerDuty into our internal developer-facing applications.
 
