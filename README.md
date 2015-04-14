@@ -1,6 +1,8 @@
 PagerDuty Utils
 ===
 
+[![Gem Version](https://badge.fury.io/rb/pagerduty_utils.svg)](http://badge.fury.io/rb/pagerduty_utils)
+
 These PagerDuty Utils are a set of tools used by the Tapjoy DevOps team to integrate PagerDuty into our internal developer-facing applications.
 
 In its current form, it provides access to three areas of PagerDuty -- setting an on-call override, getting a list of who is on-call, and triggering an alert.  The syntax for these commands is listed in the Commands section.  For a set of example uses, you can turn to this blog post:  <Insert Blog Post Here>
