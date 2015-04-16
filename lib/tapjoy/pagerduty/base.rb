@@ -1,11 +1,3 @@
-require 'httparty'
-require 'json'
-require 'yaml'
-require 'date'
-require 'trollop'
-require 'pagerduty/override'
-require_relative 'version'
-
 module Tapjoy
   module PagerDuty
     class Base
@@ -90,6 +82,11 @@ module Tapjoy
         post_object(endpoint, data)
       end
 
+      def get_incidents
+        endpoint = return_pagerduty_url(:incidents)
+        return get_object(endpoint)
+      end
+
       private
       # Helper method for all GETs
       def get_object(endpoint)
@@ -118,7 +115,7 @@ module Tapjoy
       # Helper method for building PagerDuty URLs
       def return_pagerduty_url(object_type)
         rest_api_url = "https://#{@AUTH_HEADER[:subdomain]}.pagerduty.com/api/v1"
-        incident_api_url = 'https://events.pagerduty.com/generic/2010-04-15'
+        integration_api_url = 'https://events.pagerduty.com/generic/2010-04-15'
         case object_type
         when :users
           return rest_api_url + '/users'
@@ -126,8 +123,10 @@ module Tapjoy
           return rest_api_url + '/schedules'
         when :escalation_on_call
           return rest_api_url + '/escalation_policies/on_call'
+        when :incidents
+          return rest_api_url + '/incidents'
         when :create_trigger
-          return incident_api_url + '/create_event.json'
+          return integration_api_url + '/create_event.json'
         else
           abort("Unknown object type: #{object_type}. Can't build URL.")
         end
