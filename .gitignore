@@ -2,3 +2,5 @@ spec/fixtures/*.yaml
 spec/fixtures/*.yml
 Gemfile
 Gemfile.lock
+/tmp
+*.gem
