@@ -91,6 +91,16 @@ hash as specified in 'triggers.yaml'
          --help, -h:   Show this message
 ```
 
+### audit
+
+This script will return the last 30 days of pages or last 100 pages, which ever is fewer.  There are no options available for this command at this time.
+
+For more information on the output of this command: https://developer.pagerduty.com/documentation/rest/incidents/list
+
+```
+Usage: pgutils audit
+```
+
 ## Example Uses
 ### Getting help from a continuous deployment page
 
