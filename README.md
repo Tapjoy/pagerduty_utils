@@ -94,12 +94,17 @@ hash as specified in 'triggers.yaml'
 
 ### audit
 
-This script will return the last 30 days of pages or last 100 pages, which ever is fewer.  There are no options available for this command at this time.
+By default, this script will return the last 30 days of pages or last 100 pages, which ever is fewer.  There are parameters to adjust the date range, but 100 pages is still the cap.
 
 For more information on the output of this command: https://developer.pagerduty.com/documentation/rest/incidents/list
 
 ```
-Usage: pgutils audit
+  Usage: pgutils audit
+
+  Options:
+    -s, --since=<i>    Get list of incidents since the given time window in days (default: 30)
+    -u, --until=<i>    Get list of incidents until the given time window in days relative to since parameter (default: 30)
+    -h, --help         Show this message
 ```
 
 ## Example Uses

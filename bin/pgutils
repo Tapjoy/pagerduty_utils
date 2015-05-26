@@ -71,12 +71,14 @@ when 'get_on_call'
     puts '---'
   end
 when 'audit'
-  Trollop::options do
+  opts = Trollop::options do
     usage 'audit'
-    synopsis "\nThis script will return the last 30 days of pages or last 100 pages, which ever is fewer.\nThere are no options available for this command at this time."
+    opt :since, 'Get list of incidents since the given time window in days', default: 30, type: :int
+    opt :until, 'Get list of incidents until the given time window in days relative to since parameter', default: 30, type: :int
+    synopsis "\nBy default, this script will return the last 30 days of pages or last 100 pages, which ever is fewer.\nThere are parameters to adjust the date range, but 100 pages is still the cap."
   end
 
-  incidents = Tapjoy::PagerDuty::Base.new.get_incidents
+  incidents = Tapjoy::PagerDuty::Base.new.get_incidents(query_start: opts[:since], query_end: opts[:until])
   puts incidents['incidents'].to_yaml
   puts "Total Alerts: #{incidents['total']}"
 
