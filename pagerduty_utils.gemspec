@@ -2,7 +2,7 @@ require File.expand_path('../lib/tapjoy/pagerduty/version', __FILE__)
 Gem::Specification.new do |s|
   s.name        = 'pagerduty_utils'
   s.version     = Tapjoy::PagerDuty::VERSION
-  s.date        = '2015-04-22'
+  s.date        = '2015-05-26'
   s.summary     = 'Tapjoy PagerDuty Tools'
   s.description = 'A set of tools to make leveraging the PagerDuty APIs easier'
   s.authors     = ['Ali Tayarani', 'Ed Healy']

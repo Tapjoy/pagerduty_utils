@@ -9,8 +9,8 @@ module Tapjoy
         pg_conn = YAML.load_file(config_file) if File.readable?(config_file)
 
         @AUTH_HEADER = {
-          :subdomain    => ENV['PAGERDUTY_SUBDOMAIN'] || pg_conn[:subdomain],
-          :token_string => "Token token=#{ENV['PAGERDUTY_API_TOKEN'] || pg_conn[:api_token]}"
+          subdomain:    ENV['PAGERDUTY_SUBDOMAIN'] || pg_conn[:subdomain],
+          token_string: "Token token=#{ENV['PAGERDUTY_API_TOKEN'] || pg_conn[:api_token]}"
         }
 
         raise 'Missing subdomain value' if @AUTH_HEADER[:subdomain].nil?
@@ -82,8 +82,10 @@ module Tapjoy
         post_object(endpoint, data)
       end
 
-      def get_incidents
-        endpoint = return_pagerduty_url(:incidents)
+      def get_incidents(query_start:, query_end:)
+        since_date = Date.today - query_start
+        until_date = since_date + query_end
+        endpoint = "#{return_pagerduty_url(:incidents)}?since=#{since_date}&until=#{until_date}"
         return get_object(endpoint)
       end
 
